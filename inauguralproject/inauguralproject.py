@@ -110,3 +110,39 @@ class HouseholdSpecializationModelClass:
                 print(f'{k} = {v:6.4f}')
 
         return opt
+    
+
+    
+    def solve(self):
+        def obj(x):
+            u = self.calc_utility(x[0], x[1], x[2], x[3])
+            return - u
+    
+        bounds = [(0, 24)]*4
+        guess = [8]*4
+# call the numerical minimizer
+        solution = optimize.minimize(obj, x0 = guess, bounds=bounds, options={'xatol': 1e-8})
+        return solution
+
+    def solve_wF_vec(self,discrete=False):
+        """ solve model for vector of female wages """
+
+        pass
+
+    def run_regression(self):
+        """ run regression """
+
+        par = self.par
+        sol = self.sol
+
+        x = np.log(par.wF_vec)
+        y = np.log(sol.HF_vec/sol.HM_vec)
+        A = np.vstack([np.ones(x.size),x]).T
+        sol.beta0,sol.beta1 = np.linalg.lstsq(A,y,rcond=None)[0]
+    
+    def estimate(self,alpha=None,sigma=None):
+        """ estimate alpha and sigma """
+
+        pass    
+
+        
