@@ -112,22 +112,34 @@ class HouseholdSpecializationModelClass:
         return opt
     
 
-    
+ #Continuous:   
     def solve(self):
+              
         def obj(x):
             u = self.calc_utility(x[0], x[1], x[2], x[3])
             return - u
     
         bounds = [(0, 24)]*4
-        guess = [8]*4
+        guess = [6]*4
 # call the numerical minimizer
-        solution = optimize.minimize(obj, x0 = guess, bounds=bounds, options={'xatol': 1e-8})
-        return solution
+        solution = optimize.minimize(obj, x0 = guess, bounds=bounds) #options={'xatol': 1e-4})
+
+       
+        return solution.x
 
     def solve_wF_vec(self,discrete=False):
         """ solve model for vector of female wages """
-
-        pass
+        par = self.par
+        sol = self.sol
+        WF_list = [0.8, 0.9, 1, 1.1, 1.2]
+        for it, alpha in enumerate(WF_list):
+            par.wF = alpha
+            out = self.solve()
+            sol.LM_vec[it] = out[0]
+            sol.LF_vec[it] = out[1]
+            sol.HM_vec[it] = out[2]      
+            sol.HF_vec[it] = out[3]      
+              
 
     def run_regression(self):
         """ run regression """
