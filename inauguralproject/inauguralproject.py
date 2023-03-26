@@ -53,10 +53,10 @@ class HouseholdSpecializationModelClass:
         C = par.wM*LM + par.wF*LF
 
         # b. home production
-        if par.sigma==0:
-            H=np.min(HM,HF)
-        elif par.sigma==1:
-            H = HM**(1-par.alpha)*HF**par.alpha
+        if np.allclose(par.sigma, 0): # if par.sigma==0: can't compare float with equality
+            H=np.min([HM,HF])
+        elif np.allclose(par.sigma, 1): # elif par.sigma==1: can't compare float with equality
+            H = HM**(1-par.alpha) * HF**par.alpha
         else:
             H = ((1 - par.alpha) * HM**((par.sigma - 1) / par.sigma) + par.alpha * HF**((par.sigma - 1) / par.sigma))**(par.sigma / (par.sigma - 1))
 
@@ -120,7 +120,7 @@ class HouseholdSpecializationModelClass:
             return - u
     
         bounds = [(0, 24)]*4
-        guess = [6]*4
+        guess = [6.0]*4
 # call the numerical minimizer
         solution = optimize.minimize(obj, x0 = guess, bounds=bounds) #options={'xatol': 1e-4})
 
@@ -131,7 +131,7 @@ class HouseholdSpecializationModelClass:
         """ solve model for vector of female wages """
         par = self.par
         sol = self.sol
-        WF_list = [0.8, 0.9, 1, 1.1, 1.2]
+        WF_list = [0.8, 0.9, 1., 1.1, 1.2]
         for it, alpha in enumerate(WF_list):
             par.wF = alpha
             out = self.solve()
@@ -154,6 +154,7 @@ class HouseholdSpecializationModelClass:
     
     def estimate(self,alpha=None,sigma=None):
         """ estimate alpha and sigma """
+
         def obj(x):
             par = self.par
             sol = self.sol
