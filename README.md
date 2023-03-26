@@ -1,9 +1,9 @@
-# \[Group name\]
+# \[Group LRA\]
 
 **Group members:**
-- A
-- B
-- C
+- Andreas Krabbe Thommesen
+- Emil Lucas Juul
+- Rachel Ellen Rea
 
 This repository contains  
 1. Inaugural project. 
