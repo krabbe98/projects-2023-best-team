@@ -154,6 +154,22 @@ class HouseholdSpecializationModelClass:
     
     def estimate(self,alpha=None,sigma=None):
         """ estimate alpha and sigma """
+        def obj(x):
+            par = self.par
+            sol = self.sol
+            par.alpha = x[0]
+            par.sigma = x[1]
+            self.solve_wF_vec()
+            self.run_regression()
+            fun = (par.beta0_target - sol.beta0)**2.0 + (par.beta1_target - sol.beta1)**2.0
+
+            return -fun
+
+        bounds = [(0., 24.), (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
+        guess = [.5, .5] #[alpha, sigma]
+        solution = optimize.minimize(obj, x0 = guess, bounds=bounds) #options={'xatol': 1e-4})
+
+        return solution.x
 
         pass    
 
