@@ -1,9 +1,9 @@
-# \[Group name\]
+# \[Group ALR\]
 
 **Group members:**
-- A
-- B
-- C
+- Andreas Krabbe
+- Emil Lucas
+- Rachel
 
 This repository contains  
 1. Inaugural project. 
