@@ -136,11 +136,10 @@ class HouseholdSpecializationModelClass:
             par.wF = alpha
             out = self.solve()
             sol.LM_vec[it] = out[0]
-            sol.LF_vec[it] = out[1]
-            sol.HM_vec[it] = out[2]      
+            sol.HM_vec[it] = out[1]      
+            sol.LF_vec[it] = out[2]
             sol.HF_vec[it] = out[3]      
-              
-
+        
     def run_regression(self):
         """ run regression """
 
@@ -164,11 +163,11 @@ class HouseholdSpecializationModelClass:
             self.run_regression()
             fun = (par.beta0_target - sol.beta0)**2.0 + (par.beta1_target - sol.beta1)**2.0
 
-            return -fun
+            return fun
 
         bounds = [(0., 24.), (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
-        guess = [.5, .5] #[alpha, sigma]
-        solution = optimize.minimize(obj, x0 = guess, bounds=bounds) #options={'xatol': 1e-4})
+        guess = [.5, 1] #[alpha, sigma]
+        solution = optimize.minimize(obj, x0 = guess, bounds=bounds, method = "nelder-mead") #options={'xatol': 1e-4})
 
         return solution.x
 
