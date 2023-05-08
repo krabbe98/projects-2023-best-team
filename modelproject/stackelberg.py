@@ -50,12 +50,6 @@ class StackelbergSolver:
 
 
 
-import matplotlib.pyplot as plt
-import numpy as np
-import ipywidgets as widgets
-from types import SimpleNamespace
-from scipy import optimize
-
 def plot_stackelberg(a=1, b=1, X=0, c1=0, c2=0):
     model = StackelbergSolver()
     # Update model parameters
@@ -93,7 +87,15 @@ def plot_stackelberg_interact():
 );
 
 
-class StackelbergSolverRising:
+
+
+from scipy import optimize
+import numpy as np
+import matplotlib.pyplot as plt
+from types import SimpleNamespace
+import ipywidgets as widgets
+
+class StackelbergSolver2:
     def __init__(self):
         """ setup model """
 
@@ -103,6 +105,7 @@ class StackelbergSolverRising:
         par.b = 1 # demand for good 2
         par.X = 20 # demand for p=0
         par.c  = [0,0] # marginal cost
+        par.t = [0,0.1]
         
     def demand_function(self, q1, q2):
         par = self.par
@@ -110,16 +113,20 @@ class StackelbergSolverRising:
         return demand
 
     def cost_function(self, q, c):
-        return c^2*q # marginal cost times quantity, but now it is increasing marginal costs!
+        return c*q # marginal cost times quantity
 
-    def profits(self, c, q1, q2): 
+    def profits1(self, c, q1, q2): 
         # income - expenditures
-        return self.demand_function(q1,q2)*q1-self.cost_function(q1,c)
-    
+        return (self.demand_function(q1,q2)*q1-self.cost_function(q1,c))*(1-self.par.t[0])
+
+    def profits2(self, c, q1, q2): 
+        # income - expenditures
+        return (self.demand_function(q1,q2)*q1-self.cost_function(q1,c))*(1-self.par.t[1])
+
     def reaction(self, q2,c1):
         # Maaaaaaax profit
         
-        responce =  optimize.minimize(lambda x: - self.profits(c1,x,q2), x0=0, method = 'SLSQP')
+        responce =  optimize.minimize(lambda x: - self.profits2(c1,x,q2), x0=0, method = 'SLSQP')
         return responce.x # best responce
 
     def fixed_point(self, q):
@@ -132,20 +139,14 @@ class StackelbergSolverRising:
         par = self.par 
         initial_guess = np.array([0])
         # solve system of equations.
-        res = optimize.minimize(lambda q1: -self.profits( par.c[0], q1,self.reaction(q1 , par.c[0]) ), initial_guess)
+        res = optimize.minimize(lambda q1: -self.profits1( par.c[0], q1,self.reaction(q1 , par.c[0]) ), initial_guess)
         q1 =res.x
         q2 = self.reaction(q1,par.c[1])
         return q1, q2
 
 
 
-import matplotlib.pyplot as plt
-import numpy as np
-import ipywidgets as widgets
-from types import SimpleNamespace
-from scipy import optimize
-
-def plot_stackelberg_rising(a=1, b=1, X=0, c1=0, c2=0):
+def plot_stackelberg2(a=1, b=1, X=0, c1=0, c2=0):
     model = StackelbergSolver()
     # Update model parameters
     model.par.a = a
@@ -171,7 +172,7 @@ def plot_stackelberg_rising(a=1, b=1, X=0, c1=0, c2=0):
     plt.show()
 
 # Set up interactive sliders
-def plot_stackelberg_rising_interact():
+def plot_stackelberg_interact2():
     widgets.interact(
         plot_stackelberg,
         a=widgets.FloatSlider(description="a", min=1, max=5, step=0.25, value=1),
