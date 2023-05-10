@@ -162,16 +162,19 @@ class HouseholdSpecializationModelClass:
         def obj(x):
             par = self.par
             sol = self.sol
-            par.alpha = x[0]
-            par.sigma = x[1]
+            par.nu_M = x[0]
+            par.nu_F = x[1]            
+            par.sigma = x[2]
+            par.epsilon_M = x[3]
+            par.epsilon_F = x[4]            
             self.solve_wF_vec()
             self.run_regression()
             fun = (par.beta0_target - sol.beta0)**2.0 + (par.beta1_target - sol.beta1)**2.0
 
             return fun
 
-        bounds = [(0., 24.), (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
-        guess = [.5, 1] #[alpha, sigma]
+        bounds = [(0., 24.), (0., 24.),  (0., 24.),  (0., 24.) (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
+        guess = [.001, .001, 1, 1, 1] #[alpha, sigma]
         solution = optimize.minimize(obj, x0 = guess, bounds=bounds, method = "nelder-mead") #options={'xatol': 1e-4})
 
         return solution.x
