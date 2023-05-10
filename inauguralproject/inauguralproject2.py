@@ -173,7 +173,7 @@ class HouseholdSpecializationModelClass:
 
             return fun
 
-        bounds = [(0., 24.), (0., 24.),  (0., 24.),  (0., 24.) (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
+        bounds = [(0., 24.), (0., 24.),  (0., 24.),  (0., 24.), (0., 24.)] #[(min_alpha, max_alpha), (min_sigma, max_sigma)]
         guess = [.001, .001, 1, 1, 1] #[alpha, sigma]
         solution = optimize.minimize(obj, x0 = guess, bounds=bounds, method = "nelder-mead") #options={'xatol': 1e-4})
 
