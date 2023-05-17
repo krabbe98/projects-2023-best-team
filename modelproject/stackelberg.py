@@ -166,7 +166,7 @@ def plot_stackelberg2(a=1, b=1, X=0, c1=0, c2=0, t1=0, t2=0.1):
 # Set up interactive sliders
 def plot_stackelberg_interact2():
     widgets.interact(
-        plot_stackelberg,
+        plot_stackelberg2,
         a=widgets.FloatSlider(description="a", min=1, max=5, step=0.25, value=1),
         b=widgets.FloatSlider(description="b", min=1, max=5, step=0.25, value=1),
         X=widgets.FloatSlider(description="X", min=1, max=50, step=0.5, value=20),
