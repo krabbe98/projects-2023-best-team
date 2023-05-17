@@ -84,6 +84,7 @@ def plot_stackelberg_interact():
         b=widgets.FloatSlider(description="b", min=1, max=5, step=0.25, value=1),
         X=widgets.FloatSlider(description="X", min=1, max=50, step=0.5, value=20),
         c1=widgets.FloatSlider(description="c1", min=0, max=5, step=0.1, value=0),
+        c2=widgets.FloatSlider(description="c2", min=0, max=5, step=0.1, value=0)
 );
 
 
