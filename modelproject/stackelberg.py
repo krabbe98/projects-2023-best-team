@@ -99,7 +99,7 @@ class StackelbergSolver2:
         par.b = 1 # demand for good 2
         par.X = 20 # demand for p=0
         par.c  = [0,0] # marginal cost
-        par.t = [0,0.1]
+        par.t = [0,0.2]
         
     def demand_function(self, q1, q2):
         par = self.par
