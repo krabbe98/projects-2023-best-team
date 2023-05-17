@@ -51,13 +51,13 @@ class StackelbergSolver:
 
 
 
-def plot_stackelberg(a=1, b=1, X=0, c1=0, c2=0):
+def plot_stackelberg(a=1, b=1, X=0, c1=0):
     model = StackelbergSolver()
     # Update model parameters
     model.par.a = a
     model.par.b = b
     model.par.X = X
-    model.par.c = [c1, c2]
+    model.par.c = [c1, 0]
     
     # x axis grid
     range_q1 = np.arange(0,21,0.1)
@@ -84,7 +84,6 @@ def plot_stackelberg_interact():
         b=widgets.FloatSlider(description="b", min=1, max=5, step=0.25, value=1),
         X=widgets.FloatSlider(description="X", min=1, max=50, step=0.5, value=20),
         c1=widgets.FloatSlider(description="c1", min=0, max=5, step=0.1, value=0),
-        c2=widgets.FloatSlider(description="c2", min=0, max=5, step=0.1, value=0)
 );
 
 
@@ -138,14 +137,14 @@ class StackelbergSolver2:
         q2 = self.reaction(q1,par.c[1])
         return q1, q2
     
-def plot_stackelberg2(a=1, b=1, X=0, c1=0, c2=0, t1=0, t2=0.1):
+def plot_stackelberg2(a=1, b=1, X=0, c1=0, c2=0, t2=0.1):
     model = StackelbergSolver2()
     # Update model parameters
     model.par.a = a
     model.par.b = b
     model.par.X = X
     model.par.c = [c1, c2]
-    model.par.t = [t1,t2]    
+    model.par.t = [0,t2]    
     # x axis grid
     range_q1 = np.arange(0,21,0.1)
     # y axis grid
